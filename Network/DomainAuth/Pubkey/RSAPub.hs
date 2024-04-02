@@ -41,7 +41,9 @@ lookupPublicKey' resolver domain = do
         Right x -> return $ extractPub x
 
 extractPub :: [ByteString] -> Maybe ByteString
-extractPub = lookup "p" . parseTaggedValue . head
+extractPub xs = case xs of
+  [] -> Nothing
+  (x:_) -> lookup "p" (parseTaggedValue x)
 
 decodeRSAPublicyKey :: ByteString -> PublicKey
 decodeRSAPublicyKey b64 = pub
